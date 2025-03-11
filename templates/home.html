@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Performance Prediction System</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='public/student-performance-favicon.svg') }}" type="image/x-icon">
+    
+    <!-- Tailwind & Animations -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <!-- <link rel="shortcut icon" href="/public/student-performance-favicon.svg" type="image/x-icon"> -->
+    <script src="{{ url_for('static', filename='js/tailwind_config.js') }}"></script>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-blue-900 to-gray-800 min-h-screen flex flex-col overflow-hidden transition-all duration-500">
+    
+    <!-- Redirect if not logged in -->
+    {% if not session.get('user_id') %}
+        <script>
+            window.location.href = "{{ url_for('login') }}";
+        </script>
+    {% endif %}
+
+<!-- Navbar -->
+<nav class="bg-gray-900/90 backdrop-blur-sm border-b border-blue-400/20 shadow-md sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+            <h1 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 animate__animated animate__fadeIn">
+                Student Performance App
+            </h1>
+            <div class="flex items-center space-x-2">
+                <button class="nav-btn bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-3 rounded flex items-center justify-center text-sm" onclick="window.open('https://github.com/AnoopGeorge418/StudentPerformance-Prediction_System', '_blank')">
+                    <i class="fab fa-github text-lg"></i>
+                </button>
+                <button class="nav-btn bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-3 rounded flex items-center justify-center text-sm" onclick="window.open('https://www.linkedin.com/in/anoop-george418/', '_blank')">
+                    <i class="fab fa-linkedin text-lg"></i>
+                </button>
+                <button class="nav-btn bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-3 rounded flex items-center justify-center text-sm" onclick="window.open('https://x.com/Anoopgeorg_', '_blank')">
+                    <i class="fab fa-x-twitter text-lg">X</i>
+                </button>
+                <button class="nav-btn bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-3 rounded flex items-center justify-center text-sm" onclick="window.open('https://www.youtube.com/@AnoopGeorge418', '_blank')">
+                    <i class="fab fa-youtube text-lg"></i>
+                </button>
+                <button class="nav-btn bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-3 rounded flex items-center justify-center text-sm" onclick="window.open('https://github.com/AnoopGeorge418', '_blank')">
+                    <i class="fas fa-user-circle text-lg"></i> Portfolio
+                </button>
+                <a href="{{ url_for('logout') }}" class="w-36 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded flex items-center justify-center">
+                    <i class="fas fa-sign-out-alt text-lg mr-1"></i> Logout
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <!-- Background Particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Main Content -->
+    <div class="flex-grow flex items-center justify-center p-4">
+        <div class="bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-2xl max-w-xl w-full p-6 md:p-8 border border-blue-400/20 animate__animated animate__fadeIn main-container">
+            
+            <!-- Title -->
+            <div class="mb-8 text-center animate__animated animate__fadeInDown">
+                <h1 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 mb-2">
+                    Student Performance Indicator
+                </h1>
+                <div class="h-1 w-24 bg-gradient-to-r from-blue-500 to-cyan-400 mx-auto rounded-full animate__animated animate__fadeIn animate__delay-1s"></div>
+            </div>
+
+            <!-- Prediction Form -->
+            <form action="{{ url_for('predict_datapoint')}}" method="post" class="space-y-6">
+                
+                <!-- Gender -->
+                <div class="relative">
+                    <label class="text-sm font-medium text-blue-300 block mb-2">Gender</label>
+                    <select class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-white" name="gender" required>
+                        <option selected disabled value="">Select your Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+
+                <!-- Race/Ethnicity -->
+                <div class="relative">
+                    <label class="text-sm font-medium text-blue-300 block mb-2">Race or Ethnicity</label>
+                    <select class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-white" name="ethnicity" required>
+                        <option selected disabled value="">Select Ethnicity</option>
+                        <option value="group A">Group A</option>
+                        <option value="group B">Group B</option>
+                        <option value="group C">Group C</option>
+                        <option value="group D">Group D</option>
+                        <option value="group E">Group E</option>
+                    </select>
+                </div>
+
+                <!-- Parental Education -->
+                <div class="relative">
+                    <label class="text-sm font-medium text-blue-300 block mb-2">Parental Level of Education</label>
+                    <select class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-white" name="parental_level_of_education" required>
+                        <option selected disabled value="">Select Education Level</option>
+                        <option value="associate's degree">Associate's Degree</option>
+                        <option value="bachelor's degree">Bachelor's Degree</option>
+                        <option value="high school">High School</option>
+                        <option value="master's degree">Master's Degree</option>
+                        <option value="some college">Some College</option>
+                        <option value="some high school">Some High School</option>
+                    </select>
+                </div>
+
+                <!-- Lunch -->
+                <div class="relative">
+                    <label class="text-sm font-medium text-blue-300 block mb-2">Lunch Type</label>
+                    <select class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-white" name="lunch" required>
+                        <option selected disabled value="">Select Lunch Type</option>
+                        <option value="free/reduced">Free/Reduced</option>
+                        <option value="standard">Standard</option>
+                    </select>
+                </div>
+
+                <!-- Test Prep Course -->
+                <div class="relative">
+                    <label class="text-sm font-medium text-blue-300 block mb-2">Test Preparation Course</label>
+                    <select class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-white" name="test_preparation_course" required>
+                        <option selected disabled value="">Select Test Course</option>
+                        <option value="none">None</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+
+                <!-- Scores -->
+                <div class="relative">
+                    <label class="text-sm font-medium text-blue-300 block mb-2">Reading Score</label>
+                    <input class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-white" type="number" name="reading_score" min="0" max="100" required>
+                </div>
+
+                <div class="relative">
+                    <label class="text-sm font-medium text-blue-300 block mb-2">Writing Score</label>
+                    <input class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-white" type="number" name="writing_score" min="0" max="100" required>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-lg text-sm px-5 py-3">Predict Score</button>
+            </form>
+
+            <!-- Display Prediction Result -->
+            {% if results %}
+            <div class="mt-6 text-center text-xl text-blue-400">
+                <strong>Predicted Math Score: {{ results }}</strong>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- JavaScript for Navigation & Theme Toggle -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        function navigateTo(url) {
+            window.location.href = url; // Ensures the link opens in the same tab
+        }
+
+        // Select all buttons and ensure they have an event listener
+        document.querySelectorAll('.nav-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const url = this.getAttribute('data-url'); // Get URL from data attribute
+                navigateTo(url);
+            });
+        });
+    });
+        // Function to toggle theme
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('themeIcon');
+
+            // Check if dark mode is enabled
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+                themeIcon.classList.replace('fa-moon', 'fa-sun'); // Change icon to Sun ☀️
+                document.body.classList.remove('from-gray-900', 'via-blue-900', 'to-gray-800');
+                document.body.classList.add('from-blue-100', 'via-white', 'to-blue-100');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeIcon.classList.replace('fa-sun', 'fa-moon'); // Change icon to Moon 🌙
+                document.body.classList.remove('from-blue-100', 'via-white', 'to-blue-100');
+                document.body.classList.add('from-gray-900', 'via-blue-900', 'to-gray-800');
+            }
+        }
+
+        // Apply theme on page load based on saved preference
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme') || 'dark'; // Default to dark mode
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('themeIcon');
+
+            if (savedTheme === 'dark') {
+                html.setAttribute('data-theme', 'dark');
+                if (themeIcon.classList.contains('fa-sun')) {
+                    themeIcon.classList.replace('fa-sun', 'fa-moon'); // Show Moon icon
+                }
+            } else {
+                html.setAttribute('data-theme', 'light');
+                if (themeIcon.classList.contains('fa-moon')) {
+                    themeIcon.classList.replace('fa-moon', 'fa-sun'); // Show Sun icon
+                }
+                document.body.classList.remove('from-gray-900', 'via-blue-900', 'to-gray-800');
+                document.body.classList.add('from-blue-100', 'via-white', 'to-blue-100');
+            }
+        }
+
+        // Add event listener to theme toggle button
+        document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+    </script>
+
+    <!-- Particle Animation JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Configure and initialize particles
+        particlesJS('particles', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: '#4b9cd3' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#4b9cd3',
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 1,
+                    direction: 'none',
+                    random: true,
+                    out_mode: 'out'
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: { enable: true, mode: 'bubble' },
+                    onclick: { enable: true, mode: 'push' }
+                },
+                modes: {
+                    bubble: { distance: 250, size: 6, duration: 2 },
+                    push: { particles_nb: 4 }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
