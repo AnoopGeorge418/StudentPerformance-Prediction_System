@@ -6,4 +6,8 @@ ipykernel
 scikit-learn
 catboost
 xgboost
+isort
+black
+dill
+pyarrow
 # -e .
