@@ -177,3 +177,5 @@ envs/
 artifacts/
 logs/
 models/
+.env
+/flask_session
