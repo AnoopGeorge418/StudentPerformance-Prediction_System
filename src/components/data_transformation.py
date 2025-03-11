@@ -36,7 +36,7 @@ class DataTransformation:
             categorical_pipeline = Pipeline([
                 ('imputer', SimpleImputer(strategy='most_frequent')),
                 ('one_hot_encoder', OneHotEncoder()),
-                ('scaler', StandardScaler(with_mean=False))  # ✅ Fix: `with_mean=False` prevents error
+                ('scaler', StandardScaler(with_mean=False)) 
             ])
 
             preprocessor = ColumnTransformer([
@@ -44,6 +44,7 @@ class DataTransformation:
                 ('categorical_pipeline', categorical_pipeline, categorical_features)
             ])
             return preprocessor
+        
         except Exception as e:
             raise CustomException(e, sys)
         
@@ -63,14 +64,16 @@ class DataTransformation:
             target_feature_test_df = test_df[target_column]
 
             input_feature_train_arr = preprocessor_objects.fit_transform(input_features_train_df)
-            input_feature_test_arr = preprocessor_objects.transform(input_features_test_df)  # ✅ Fixed
+            input_feature_test_arr = preprocessor_objects.transform(input_features_test_df)  
 
             train_arr = np.c_[input_feature_train_arr, np.array(target_feature_train_df)]
             test_arr = np.c_[input_feature_test_arr, np.array(target_feature_test_df)]
 
-            os.makedirs(self.data_transformation_config.models_dir, exist_ok=True)  # ✅ Ensure models dir exists
+            logging.info('Object has been saved')
+            os.makedirs(self.data_transformation_config.models_dir, exist_ok=True)  
             save_object(self.data_transformation_config.preprocessor_obj_file_path, preprocessor_objects)
 
             return train_arr, test_arr, self.data_transformation_config.preprocessor_obj_file_path
+        
         except Exception as e:
             raise CustomException(e, sys)
