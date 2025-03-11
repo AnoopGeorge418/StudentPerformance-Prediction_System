@@ -10,4 +10,12 @@ isort
 black
 dill
 pyarrow
+Flask
+bcrypt
+psycopg2
+secure-smtplib
+flask_dance
+flask_limiter
+flask_session
+dotenv
 # -e .
