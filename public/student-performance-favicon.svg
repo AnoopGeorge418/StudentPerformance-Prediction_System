@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A" /> <!-- from-blue-900 -->
+      <stop offset="100%" stop-color="#0C4A6E" /> <!-- to-gray-800 with blue tint -->
+    </linearGradient>
+    <linearGradient id="chartGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#60A5FA" /> <!-- from-blue-400 -->
+      <stop offset="100%" stop-color="#22D3EE" /> <!-- to-cyan-300 -->
+    </linearGradient>
+  </defs>
+  
+  <!-- Rounded square background -->
+  <rect x="2" y="2" width="60" height="60" rx="12" fill="url(#bgGradient)" />
+  
+  <!-- Chart icon representing student performance -->
+  <path d="M12 42 L12 18 L52 18 L52 42 Z" fill="none" stroke="#164E63" stroke-width="2" />
+  
+  <!-- Chart grid lines -->
+  <path d="M12 26 L52 26 M12 34 L52 34" stroke="#164E63" stroke-width="1" stroke-dasharray="2" />
+  
+  <!-- Performance bar chart -->
+  <rect x="16" y="34" width="8" height="8" fill="url(#chartGradient)" rx="1" />
+  <rect x="28" y="30" width="8" height="12" fill="url(#chartGradient)" rx="1" />
+  <rect x="40" y="22" width="8" height="20" fill="url(#chartGradient)" rx="1" />
+  
+  <!-- Rising trend line showing improvement -->
+  <path d="M16 36 L28 31 L40 24 L48 22" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" />
+  <circle cx="48" cy="22" r="3" fill="white" />
+</svg>
