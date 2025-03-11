@@ -1,13 +1,13 @@
 import os
 import sys
-import numpy as np # type: ignore
 import pandas as pd # type: ignore
 from dataclasses import dataclass # type: ignore
 from sklearn.model_selection import train_test_split # type: ignore
 
 from src.exceptions import CustomException
 from src.logger import logging
-from src.components.data_transformation import DataTransformation, DataTransformationConfig  # ✅ Fixed import
+from src.components.data_transformation import DataTransformation, DataTransformationConfig
+from src.components.model_trainer import ModelTrainer, ModelTrainerConfig
 
 @dataclass
 class DataIngestionConfig:
@@ -46,7 +46,11 @@ def run_data_ingestion():
     obj = DataIngestion()
     train_data, test_data = obj.initiate_data_ingestion()
     data_transformation = DataTransformation()
-    data_transformation.initiate_dataTransformation(train_data, test_data)
+    train_arr, test_arr, _ = data_transformation.initiate_dataTransformation(train_data, test_data)
+
+    model_trainer = ModelTrainer()
+    print(model_trainer.initiate_model_trainer(train_arr, test_arr))
+
 
 if __name__ == "__main__":
     run_data_ingestion()
