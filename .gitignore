@@ -174,3 +174,5 @@ cython_debug/
 # Custom Ingnoring folder, files, ENVs, and more
 envs/
 .vscode/
+artifacts/
+logs/
