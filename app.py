@@ -303,5 +303,5 @@ def github_login_callback():
 atexit.register(db.close_connection)
 
 if __name__ == "__main__":
-    # print("Running on: http://127.0.0.1:5000")
+    print("Running on: http://127.0.0.1:5000")
     app.run(debug=True)
